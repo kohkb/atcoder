@@ -18,7 +18,7 @@ M.times do |i|
     h[from] << to
     h[to] << from
   end
-  
+
   visited = {}
   queue = [1]
   until queue.empty?
