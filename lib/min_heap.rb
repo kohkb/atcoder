@@ -12,10 +12,10 @@ class BinaryHeap
   end
 
   def pop
-    max_value = @heap[0]
+    min_value = @heap[0]
     @heap[0] = @heap.pop
     down_heap
-    max_value
+    min_value
   end
 
   def list
@@ -27,8 +27,8 @@ class BinaryHeap
     index = @heap.size - 1
 
     while index != 0
-      break if @heap[index] < @heap[parent_index(index)]
-      
+      break if @heap[index] > @heap[parent_index(index)]
+
       swap(index, parent_index(index))
       index = parent_index(index)
     end
@@ -44,10 +44,10 @@ class BinaryHeap
       if @heap[r].nil?
         larger_index = l
       else
-        larger_index = ( @heap[l] >= @heap[r]) ? l : r
+        larger_index = ( @heap[l] <= @heap[r]) ? l : r
       end
 
-      break if @heap[index] > @heap[larger_index]
+      break if @heap[index] < @heap[larger_index]
 
       swap(index, larger_index)
       index = larger_index
