@@ -1,4 +1,5 @@
 # 問題：https://atcoder.jp/contests/abc007/tasks/abc007_3
+# これは壁に囲まれている例なので、ABC151 Dも参考にする
 r, c = gets.chomp.split.map(&:to_i)
 sx, sy = gets.chomp.split.map(&:to_i)
 gx, gy = gets.chomp.split.map(&:to_i)
@@ -26,8 +27,8 @@ visited = Array.new(r).map { Array.new(c, 0) }
 until queue.empty?
   x, y, cnt = queue.shift
 
-  [ [x, y + 1], [x, y - 1], [x + 1, y], [x - 1, y]].each do |dx, dy|
-    break if (dx < 0) || (dy < 0) || (dx > r) || (dy > c)
+  [[x, y + 1], [x, y - 1], [x + 1, y], [x - 1, y]].each do |dx, dy|
+    next if (dx < 0) || (dy < 0) || (dx > r) || (dy > c)
     next if (ll[dx][dy] == '#') || (visited[dx][dy] == 1)
 
     visited[dx][dy] = 1
