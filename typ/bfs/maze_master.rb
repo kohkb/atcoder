@@ -1,3 +1,6 @@
+## 幅優先探索を使う
+## https://atcoder.jp/contests/abc007/tasks/abc007_3
+
 h, w = gets.chomp.split.map(&:to_i)
 s = []
 
