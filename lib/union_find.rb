@@ -9,11 +9,10 @@ class UnionFind
   end
 
   def unite(x, y)
-    x == get_parent(x)
-    y == get_parent(y)
+    x = root(x)
+    y = root(y)
 
     return if x == y
-
     if @rank[x] > @rank[y]
       @parent[y] = x
     else
@@ -24,30 +23,23 @@ class UnionFind
   end
 
   def same_group?(x, y)
-    get_parent(x) == get_parent(y)
+    root(x) == root(y)
   end
 
-  private
+  def root(x)
+    return x if @parent[x] == x
 
-  def get_parent(x)
-    if @parent[x] == x
-      x
-    else
-      @parent[x] = get_parent(@parent[x])
-    end
+    @parent[x] = root(@parent[x])
   end
 end
 
 N, Q = gets.chomp.split.map(&:to_i)
-# 0があるのでサイズはN+1にしておく
-uf = UnionFind.new(N+1)
-queries = []
+# 0~N-1のN個なのでNで良い
+uf = UnionFind.new(N)
 
 Q.times do
-  queries << gets.chomp.split.map(&:to_i)
-end
+  p ,a, b = gets.chomp.split.map(&:to_i)
 
-queries.each do |p ,a, b|
   if p == 0
     uf.unite(a, b)
   else
