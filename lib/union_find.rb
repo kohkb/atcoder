@@ -32,10 +32,17 @@ class UnionFind
     @parent[x] = root(@parent[x])
   end
 
+  # グループ数
   def size
     # 値と根が一致するものの数がグループ数
     @parent.map.with_index.count{ |n, i| n == i }
     # @parent.map.with_index.count(&:==)
+  end
+
+  # 特定のグループに所属する要素数
+  def count(x)
+    x = root(x)
+    @parent.count(x)
   end
 end
 
