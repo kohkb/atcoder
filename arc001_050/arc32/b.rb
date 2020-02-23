@@ -39,16 +39,12 @@ class UnionFind
   end
 end
 
-N, Q = gets.chomp.split.map(&:to_i)
-# 0~N-1のN個なのでNで良い
-uf = UnionFind.new(N)
+n,m = gets.chomp.split.map(&:to_i)
+uf = UnionFind.new(n)
 
-Q.times do
-  p ,a, b = gets.chomp.split.map(&:to_i)
-
-  if p == 0
-    uf.unite(a, b)
-  else
-    puts uf.same_group?(a, b) ? 'Yes' : 'No'
-  end
+m.times do
+  a, b = gets.chomp.split.map(&:to_i)
+  uf.unite(a-1, b-1)
 end
+
+p uf.size-1
