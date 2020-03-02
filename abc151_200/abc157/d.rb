@@ -1,7 +1,9 @@
-# まとめるクエリと判定クエリがある
-# ランク 木の高さ
-# 根はparent[x] = x
-# 例題:https://atc001.contest.atcoder.jp/tasks/unionfind_a
+n,m,k = gets.chomp.split.map(&:to_i)
+
+h = Hash.new(0)
+bl = Hash.new(0)
+
+
 class UnionFind
   attr_accessor :parent, :size
 
@@ -45,16 +47,28 @@ class UnionFind
   end
 end
 
-N, Q = gets.chomp.split.map(&:to_i)
-# 0~N-1のN個なのでNで良い
-uf = UnionFind.new(N)
+uf = UnionFind.new(n)
 
-Q.times do
-  p ,a, b = gets.chomp.split.map(&:to_i)
-
-  if p == 0
-    uf.unite(a, b)
-  else
-    puts uf.same_group?(a, b) ? 'Yes' : 'No'
+m.times do |i|
+  a, b = gets.chomp.split.map(&:to_i)
+  # 友達の数をカウント
+  h[a-1] += 1
+  h[b-1] += 1
+  unless uf.same_group?(a-1, b-1)
+    uf.unite(a-1,b-1)
   end
 end
+
+k.times do |i|
+  c, d = gets.chomp.split.map(&:to_i)
+
+  if uf.same_group?(c-1, d-1)
+    bl[c-1] += 1
+    bl[d-1] += 1
+  end
+end
+
+n.times do |i|
+  puts uf.size(i) - h[i] - 1 - bl[i]
+end
+
