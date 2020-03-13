@@ -1,83 +1,81 @@
 class BinaryHeap
-  def initialize(array=[])
+  attr_reader :size
+
+  def initialize
     @heap = []
-    array.each do |element|
-      add(element)
-    end
+    @size = 0
   end
 
-  def add(value)
-    @heap.push(value)
-    up_heap
+  def add(n)
+    i = @size
+    while i > 0 do
+      parent_index = (i - 1) / 2
+      break if n > @heap[parent_index]
+
+      @heap[i] = @heap[parent_index]
+      i = parent_index
+    end
+
+    @heap[i] = n
+    @size += 1
   end
 
   def pop
-    min_value = @heap[0]
-    @heap[0] = @heap.pop
-    down_heap
-    min_value
-  end
-
-  def list
-    @heap
-  end
-
-  private
-  def up_heap
-    index = @heap.size - 1
-
-    while index != 0
-      break if @heap[index] > @heap[parent_index(index)]
-
-      swap(index, parent_index(index))
-      index = parent_index(index)
-    end
-  end
-
-  def down_heap
-    index = 0
-
-    while has_child?(index) do
-      l = left_child_index(index)
-      r = right_child_index(index)
-
-      if @heap[r].nil?
-        larger_index = l
-      else
-        larger_index = ( @heap[l] <= @heap[r]) ? l : r
+    return if @size <= 0
+    min_n = @heap[0]
+    @size -= 1
+    n = @heap[@size]
+    i = 0
+    while i * 2 + 1 < @size do
+      child_index1 = i * 2 + 1
+      child_index2 = i * 2 + 2
+      if child_index2 < @size && @heap[child_index2] <= @heap[child_index1]
+        child_index1 = child_index2
       end
+      break if @heap[child_index1] > n
 
-      break if @heap[index] < @heap[larger_index]
-
-      swap(index, larger_index)
-      index = larger_index
+      @heap[i] = @heap[child_index1]
+      i = child_index1
     end
-
+    @heap[i] = n
+    min_n
   end
 
-  def parent_index(index)
-    (index - (index.even? ? 2 : 1) )/2
-  end
-
-  def left_child_index(index)
-    index * 2 + 1
-  end
-
-  def right_child_index(index)
-    index * 2 + 2
-  end
-
-  def swap(i, j)
-    @heap[i], @heap[j] = @heap[j], @heap[i]
-  end
-
-  def has_child?(index)
-    ((index * 2) + 1) < @heap.size
-  end
+  def min; @heap[0] end
+  def values; @heap.first(@size) end
+  def inspect; "Heap: #{values}" end
 end
 
-a = [3, 1, 4, 2 ,8 ,5, 6]
+arr = [3, 1, 4, 2 ,8 ,5, 6]
 
-bh = BinaryHeap.new(a)
+bh = BinaryHeap.new
+
+arr.each do |val|
+  bh.add(val)
+end
+
+p bh
+p "長さ#{bh.size}"
+p "最小値#{bh.pop}"
+p bh.add(1)
+p bh
+p bh.add(0)
+p bh
+p bh.add(15)
+p bh
+p bh.add(5)
+p bh
+p "最小値#{bh.pop}"
+p bh
+p "最小値#{bh.pop}"
+p bh
+p "最小値#{bh.pop}"
+p bh
+p "最小値#{bh.pop}"
+p bh
+p "最小値#{bh.pop}"
+
+
+
 
 
