@@ -12,9 +12,9 @@ def min(a,b)
   a < b ? a : b
 end
 
-V.times do |i|
-  V.times do |j|
-    V.times do |k|
+V.times do |k|
+  V.times do |i|
+    V.times do |j|
       dp[i][j] = min(dp[i][j], dp[i][k] + dp[k][j])
     end
   end
