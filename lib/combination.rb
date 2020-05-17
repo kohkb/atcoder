@@ -72,16 +72,15 @@ def inv(x)
 end
 
 # O(n)かかるが一度メモればあとは0(1)で取り出せるメモ化comb
-# TODO n-1CrバージョンなのでnCrに変更しておく
 def set_fac(n)
-  1.upto(n-1) do |i|
+  1.upto(n) do |i|
     @fac[i] = @fac[i-1] * i % MOD
   end
 
   # 最も大きいのは最後のやつ
   # mod pにおけるaの逆元はa^(p-2)つまり mod pの状況で bで割ってから pのあまりというのはb^(p-2)をかけるのに等しい
   @rfac[-1] = pow(@fac[-1], MOD - 2) % MOD
-  (n-2).downto(0) do |i|
+  (n-1).downto(0) do |i|
     @rfac[i] = @rfac[i+1] * (i+1) % MOD
   end
 end
@@ -90,7 +89,7 @@ n, r = gets.chomp.split.map(&:to_i)
 
 @fac = Array.new(n+1, 1)
 @rfac = Array.new(n+1)
-set_fac(n+1)
+set_fac(n)
 
 puts comb(n, r) % MOD
 puts comb_inv(n, r)
