@@ -1,5 +1,6 @@
 ONE = '1'.freeze
 MOD = (10**9) + 7
+# MOD = 998244353
 # nCrをO(r)で計算するプログラム
 # 通常のnCr
 def comb(n, r)
@@ -14,6 +15,8 @@ def comb(n, r)
 end
 
 # MODを取ってくれるnCr
+# O(k)
+# ループのたびに使うならこちらではなくメモ化を使う
 def comb_inv(n, r)
   res = 1
   i = r
@@ -53,9 +56,11 @@ def pow(base,exponent)
   end
   result *= base
   # 結果を返す
-  return result
+  return result % MOD
 end
 
+# 単体で使う場合
+# pow(x, MOD-2)のほうがはやい
 def inv(x)
   res = 1 # 逆元をどんどんかけるやつ
   beki = x # 逆元を計算したい値のMOD化でのべき乗
@@ -66,7 +71,30 @@ def inv(x)
   res
 end
 
+# O(n)かかるが一度メモればあとは0(1)で取り出せるメモ化comb
+def set_fac(n)
+  1.upto(n) do |i|
+    @fac[i] = @fac[i-1] * i % MOD
+  end
+
+  # 最も大きいのは最後のやつ
+  # mod pにおけるaの逆元はa^(p-2)つまり mod pの状況で bで割ってから pのあまりというのはb^(p-2)をかけるのに等しい
+  @rfac[-1] = pow(@fac[-1], MOD - 2) % MOD
+  (n-1).downto(0) do |i|
+    @rfac[i] = @rfac[i+1] * (i+1) % MOD
+  end
+end
+
 n, r = gets.chomp.split.map(&:to_i)
+
+@fac = Array.new(n+1, 1)
+@rfac = Array.new(n+1)
+set_fac(n)
 
 puts comb(n, r) % MOD
 puts comb_inv(n, r)
+
+# TODO n-1CrバージョンなのでnCrに変更しておく
+r.times do |i|
+  puts @fac[n-1] * @rfac[i] * @rfac[n-i-1] % MOD
+end
